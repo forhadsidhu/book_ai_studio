@@ -1,0 +1,189 @@
+╔══════════════════════════════════════════════════════════════════╗
+║              BookAI Studio — Full Setup Guide                    ║
+║              100% Local • No Cloud • No Filters                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+REQUIREMENTS
+------------
+- Python 3.10 or higher
+- Windows 10/11, macOS, or Linux
+- NVIDIA GPU with 6GB+ VRAM (for local image generation)
+  OR CPU-only mode (slower but works)
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 1 — Install Python Dependencies
+═══════════════════════════════════════════════════════════════════
+
+Open a terminal (Command Prompt or PowerShell) in this folder:
+
+    python -m pip install -r requirements.txt
+
+If you have an NVIDIA GPU (for faster local image generation):
+    python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+
+If CPU only:
+    python -m pip install torch torchvision
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 2 — Set Up LM Studio (for AI text writing)
+═══════════════════════════════════════════════════════════════════
+
+LM Studio handles all chapter writing — no OpenAI, no internet needed.
+
+1. Download LM Studio from: https://lmstudio.ai
+2. Install and open it
+3. In LM Studio, go to the Search tab and download one of these models:
+   (All are uncensored — no content restrictions)
+
+   RECOMMENDED (Fast, 8GB RAM minimum):
+   → dolphin-2.6-mistral-7b-GGUF (Q4_K_M version, ~4.5GB)
+
+   BEST QUALITY (16GB RAM minimum):
+   → dolphin-llama3-8b-GGUF (Q4_K_M version, ~5GB)
+
+   LIGHTWEIGHT (6GB RAM minimum):
+   → phi-2-GGUF (Q4_K_M version, ~1.7GB)
+
+4. Click the model → click Load Model
+5. In LM Studio, click the ← Server icon (left sidebar)
+6. Click "Start Server"
+7. You will see: Server listening on http://localhost:1234
+8. Keep LM Studio open and running while using BookAI Studio
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 3 — Set Up AUTOMATIC1111 for Images (No Filter, Local Only)
+═══════════════════════════════════════════════════════════════════
+
+AUTOMATIC1111 runs Stable Diffusion 100% on your machine.
+No internet needed after setup. No content filters.
+
+--- Install AUTOMATIC1111 ---
+
+Option A: Easy installer (Windows):
+1. Go to: https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases
+2. Download "sd.webui.zip" from the latest release
+3. Extract to a folder like C:\sd-webui\
+4. Run "update.bat" first, then run "run.bat"
+
+Option B: Manual (all platforms):
+1. Install Git: https://git-scm.com
+2. Open terminal and run:
+   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui
+   cd stable-diffusion-webui
+
+Windows:
+   Open "webui-user.bat" in Notepad
+   Change this line:
+     set COMMANDLINE_ARGS=
+   To:
+     set COMMANDLINE_ARGS=--api --listen
+   Save and close, then double-click webui-user.bat
+
+macOS / Linux:
+   Edit webui-user.sh and add:
+     export COMMANDLINE_ARGS="--api --listen"
+   Then run: ./webui.sh
+
+--- IMPORTANT: Run with --api flag ---
+The --api flag is REQUIRED so BookAI can talk to it.
+
+--- Download an Uncensored Model ---
+
+Go to: https://civitai.com (or https://huggingface.co)
+
+Recommended models (no restrictions, high quality):
+  ▸ Realistic Vision v5.1  (photorealistic, great for characters)
+  ▸ AbsoluteReality v1.8.1 (photorealistic)
+  ▸ DreamShaper XL         (artistic/fantasy)
+  ▸ ChilloutMix            (anime + realistic hybrid)
+
+Download the .safetensors file and place it here:
+  C:\sd-webui\models\Stable-diffusion\YourModel.safetensors
+
+--- Connect to BookAI ---
+
+Once AUTOMATIC1111 is running (you'll see "Running on http://127.0.0.1:7860"):
+
+1. Open BookAI Studio (python main.py)
+2. Go to Settings (gear icon)
+3. Click the "Images" tab
+4. Image Engine is already set to: automatic1111 (local SD WebUI)
+5. AUTOMATIC1111 URL should be: http://localhost:7860
+6. Click Save
+
+That's it — generate images with no internet and no content filters.
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 4 — Run BookAI Studio
+═══════════════════════════════════════════════════════════════════
+
+    python main.py
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 5 — First Use Workflow
+═══════════════════════════════════════════════════════════════════
+
+1. Click File → New Project
+2. Name your project and click OK
+3. Add a chapter using the + button in the sidebar
+4. Write in the editor OR click Generate to let the AI write
+
+For images:
+  → Make sure AUTOMATIC1111 is running first
+  → Go to Images tab
+  → Type your prompt or click "Auto-prompt from chapter"
+  → Click Generate Image
+
+For audio:
+  → Go to Audio tab
+  → Select Engine: gtts (internet) or pyttsx3 (offline)
+  → Click Read Chapter Aloud
+
+
+═══════════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════
+
+Q: Images not generating / "Connection refused" error
+A: AUTOMATIC1111 is not running or didn't start with --api flag.
+   Check that webui-user.bat has:  --api --listen
+   Wait for AUTOMATIC1111 to fully load (watch the terminal for "Running on...")
+
+Q: "Cannot connect to LM Studio"
+A: Open LM Studio → load a model → click Local Server → Start Server.
+
+Q: Image generation very slow
+A: Normal without a GPU. With an NVIDIA GPU it takes 5–20 seconds.
+   Install CUDA torch for GPU acceleration (see Step 1).
+
+Q: "No module named PyQt6"
+A: Run: python -m pip install PyQt6
+
+Q: Audio export fails
+A: Run: python -m pip install gTTS
+   For fully offline TTS: python -m pip install pyttsx3
+
+Q: "pip is not recognized"
+A: Use: python -m pip install ... (not just pip install ...)
+
+
+═══════════════════════════════════════════════════════════════════
+RECOMMENDED MODELS SUMMARY
+═══════════════════════════════════════════════════════════════════
+
+TEXT (LM Studio) — Uncensored:
+  ▸ dolphin-2.6-mistral-7b-GGUF   Fast, smart, no restrictions
+  ▸ dolphin-llama3-8b-GGUF        Best quality, slightly slower
+
+IMAGES (AUTOMATIC1111) — No filter:
+  ▸ Realistic Vision v5.1         Best for realistic characters
+  ▸ DreamShaper XL                Best for fantasy/artistic scenes
+  ▸ AbsoluteReality v1.8.1        Photorealistic detail
+
+Download image models from: https://civitai.com
+Download text models from:  https://lmstudio.ai (built-in search)

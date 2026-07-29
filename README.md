@@ -4,6 +4,20 @@ A fully offline AI-powered desktop app for writing books, generating character p
 
 ---
 
+
+## 📸 Screenshots
+
+| Home | Search |
+|------|--------|
+| ![Home Screen](screenshots/screen_1.png) | ![Search Screen](screenshots/screen_2.png) |
+
+| Book Details | AI Assistant |
+|-------------|--------------|
+| ![Book Details](screenshots/screen_3.png) | ![AI Assistant](screenshots/screen_4.png) |
+
+| Library |
+|---------|
+| ![Library Screen](screenshots/screen_5.png) |
 ## Features
 
 ### Writing
